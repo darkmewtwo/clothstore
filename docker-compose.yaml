@@ -1,0 +1,25 @@
+version: '3.8'
+
+
+services:
+
+  pdb:
+    image: postgres:12
+    environment:
+      - POSTGRES_DB=clothstore
+      - POSTGRES_USERNAME=clothstore_user
+      - POSTGRES_PASSWORD=clothpass
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "5432:5432"
+  
+  web:
+    build: .
+    image: clothstore_clothstore:latest
+    depends_on:
+      - pdb
+    command: python manage.py runserver 0.0.0.0:8000
+    ports: 
+     - "8004:8000"
+    volumes:
+      - .:/clothstore
